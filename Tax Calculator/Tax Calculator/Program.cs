@@ -4,9 +4,66 @@ namespace Tax_Calculator
 {
     class Program
     {
-        static void Main(string[] args)
+        private static PacketSummary CurrentPacket;
+
+        static void Main()
         {
-            Console.WriteLine("Hello World!");
+            InitializePacket();
+            EnterGrossIncomeAndFrequency();
+            AssemblePayPacket();
+            ProgramComplete();
         }
+
+        private static void InitializePacket()
+        {
+            Console.WriteLine("Initialising...");
+            CurrentPacket = new PacketSummary();
+        }
+
+
+        private static void EnterGrossIncomeAndFrequency()
+        {
+            const string FREQUENCY_LEGEND = "\nw = Weekly;\nf = Fortnightly;\nm = Monthly;";
+            try
+            {
+                Console.WriteLine("Hello, please provide your salary as a valid decimal amount\n");
+                
+                while (CurrentPacket.SetGrossSalary(Console.ReadLine()) == false)
+                {
+                    Console.WriteLine("\nInvalid Number! I need what you enter to be a valid number please.\n Enter a valid decimal number:");
+                }
+                
+                Console.WriteLine($"\nExcellent! Are you paid Weekly, Fortnightly, or Monthly?{FREQUENCY_LEGEND}\n");
+                while(CurrentPacket.SetPayFrequency(Console.ReadLine()) == false)
+                {
+                    Console.WriteLine($"\nInvalid Frequency! Sorry, but I don't recognise what you entered.\n Please use the following for recognised inputs:{FREQUENCY_LEGEND}\n");
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        private static void AssemblePayPacket()
+        {
+            Console.WriteLine("\nBrilliant, now give me just a moment to calculate your pay packet breakdown...");
+
+            Console.WriteLine(
+                $"\n Gross Package: {CurrentPacket.GetReadableGrossSalary()}" +
+                $"\n Superannuation: {CurrentPacket.GetReadableSuperContribution()}" +
+                $"\n\n Taxable Income: {CurrentPacket.GetReadableTaxIncome()}" +
+                $"\n\n Deductions: \n{CurrentPacket.GetReadableDeductions()}" +
+                $"\n\n Net income: {CurrentPacket.GetReadableNetIncome()}" +
+                $"\n Pay Packet: {CurrentPacket.GetReadablePayPerInterval()}"
+            );
+        }
+
+        private static void ProgramComplete()
+        {
+            Console.Write("\n\nI hope this helped out! We're all finished here, when you're ready press any key to close...");
+            Console.ReadKey();
+        }
+
     }
 }
