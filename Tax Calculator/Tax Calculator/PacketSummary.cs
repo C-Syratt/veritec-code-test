@@ -11,17 +11,9 @@ namespace Tax_Calculator
         private decimal grossSalary = 0.0m;
         private EPayFrequency payFrequency = EPayFrequency.Monthly;
 
-        public PacketSummary()
-        {
+        public PacketSummary(){ }
 
-        }
-
-        #region variable Setters
-        /// <summary>
-        /// Sets the gross salary if input is valid
-        /// </summary>
-        /// <param name="rawInput">input string from user</param>
-        /// <returns>true if the input was valid</returns>
+        #region Setters
         public bool SetGrossSalary(string rawInput)
         {
             if (decimal.TryParse(rawInput, out decimal tempDeci))
@@ -35,11 +27,7 @@ namespace Tax_Calculator
             }
         }
 
-        /// <summary>
-        /// Sets the pay frequency if input is valid
-        /// </summary>
-        /// <param name="rawInput"></param>
-        /// <returns>true if the input was valid</returns>
+
         public bool SetPayFrequency(string rawInput)
         {
             try
@@ -52,29 +40,29 @@ namespace Tax_Calculator
                 return false;
             }
         }
-
         #endregion
 
-        #region variable getters
+        #region Human Readable Values
         public string GetReadableSuperContribution()
         {
             return this.GetSuperContribution().ToString(NumberFormats.CURRENCY_FORMAT);
         }
-        public string GetReadableTaxIncome()
+
+        public string GetReadableTaxableIncome()
         {
             return this.GetTaxableIncome().ToString(NumberFormats.CURRENCY_FORMAT);
         }
+
         public string GetReadableGrossSalary()
         {
             return this.GetGrossSalary().ToString(NumberFormats.GROSS_FORMAT);
         }
+        
         public string GetReadableNetIncome()
         {
             return this.GetNetIncome().ToString(NumberFormats.CURRENCY_FORMAT);
         }
-        #endregion
-
-        #region Public Logic
+        
         public string GetReadableDeductions()
         {
             decimal taxableIncome = this.GetTaxableIncome();
@@ -87,7 +75,7 @@ namespace Tax_Calculator
                 $"\n   Income Tax: {incomeTax.ToString(NumberFormats.CURRENCY_FORMAT)}"
             );
         }
-
+        
         public string GetReadablePayPerInterval()
         {
             int divideBy;
@@ -114,7 +102,7 @@ namespace Tax_Calculator
         }
         #endregion
 
-        #region private logic
+        #region Private Getters
         private decimal GetGrossSalary()
         {
             return this.grossSalary;
